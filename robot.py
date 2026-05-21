@@ -1,8 +1,7 @@
 import numpy as np
 
-# ──────────────────────────────────────────────
 # Robot Sabitleri
-# ──────────────────────────────────────────────
+
 WHEEL_RADIUS   = 0.05   # metre (5 cm)
 WHEEL_BASE     = 0.30   # metre (tekerlekler arası mesafe, 30 cm)
 MAX_SPEED      = 1.0    # m/s (maksimum doğrusal hız)
@@ -45,9 +44,9 @@ class DifferentialRobot:
         self._enc_dist  = 0.0   # toplam kat edilen mesafe (enkoder)
         self._enc_angle = 0.0   # toplam dönüş açısı (enkoder)
 
-    # ──────────────────────────────────────────
+   
     # Gerçek kinematik model (ground truth)
-    # ──────────────────────────────────────────
+   
     def step(self, v: float, omega: float) -> np.ndarray:
         """
         Bir DT adımı ilerler.
@@ -74,9 +73,9 @@ class DifferentialRobot:
 
         return np.array([self.x, self.y, self.theta])
 
-    # ──────────────────────────────────────────
+  
     # Sensör simülasyonları
-    # ──────────────────────────────────────────
+   
     def read_encoder(self) -> dict:
         """
         Tekerlek enkoderi ölçümü.
@@ -115,9 +114,9 @@ class DifferentialRobot:
             "theta_est": float(self._normalize_angle(theta_meas)),
         }
 
-    # ──────────────────────────────────────────
+   
     # Durum erişimi
-    # ──────────────────────────────────────────
+  
     def get_pose(self) -> np.ndarray:
         """Gerçek konum: [x, y, theta]"""
         return np.array([self.x, self.y, self.theta])
@@ -138,9 +137,9 @@ class DifferentialRobot:
         v  = np.hypot(dx, dy) / DT
         return (v, 0.0)  # omega enkoder/IMU'dan okunur
 
-    # ──────────────────────────────────────────
+   
     # Tekerlek hızlarına dönüşüm
-    # ──────────────────────────────────────────
+   
     def unicycle_to_wheels(self, v: float, omega: float) \
             -> tuple[float, float]:
         """
@@ -159,9 +158,9 @@ class DifferentialRobot:
         omega = (v_r - v_l) / WHEEL_BASE
         return (v, omega)
 
-    # ──────────────────────────────────────────
+ 
     # Yardımcılar
-    # ──────────────────────────────────────────
+   
     @staticmethod
     def _normalize_angle(angle: float) -> float:
         """Açıyı [-π, π] aralığına çek."""
@@ -181,9 +180,9 @@ class DifferentialRobot:
                 f"θ={np.degrees(self.theta):.1f}°)")
 
 
-# ──────────────────────────────────────────────
+
 # Hızlı test
-# ──────────────────────────────────────────────
+
 if __name__ == "__main__":
     robot = DifferentialRobot(start_pos=(25, 25), start_theta=0.0, seed=7)
 
