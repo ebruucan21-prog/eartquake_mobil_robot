@@ -1,6 +1,5 @@
 """
 environment.py — 30x30 m bina planı
-Sağ taraf açık, sol tarafta 2 kapalı oda, ortada koridor
 """
 
 import numpy as np
@@ -15,8 +14,8 @@ WALL       = 1
 DEBRIS     = 2
 DYN_DEBRIS = 3
 
-START = (2, 2)    # Sol alt
-GOAL  = (27, 27)  # Sağ üst
+START = (2, 2)    # Baslangıc
+GOAL  = (27, 27)  # Bıtıs
 
 
 class Environment:
@@ -37,21 +36,17 @@ class Environment:
         g[:, 0]  = WALL
         g[:, -1] = WALL
 
-        # Yatay duvar 1 — satır 10, SADECE sol parça (sütun 1-5)
-        # Geçit: sütun 5-29 tamamen açık (sağ taraf açık)
+      
         g[10, 1:5] = WALL
 
-        # Yatay duvar 2 — satır 20
-        # Sol parça: sütun 1-8
+      
         g[20, 1:8] = WALL
-        # Sağ parça: sütun 15-29
+  
         g[20, 15:29] = WALL
-        # Geçit: sütun 8-15 (7 hücre, geniş)
-
-        # Dikey duvar — sütun 15, sadece satır 10-20
+       
         g[10:20, 15] = WALL
 
-        # Başlangıç ve hedef çevresini temizle (3 hücre)
+        # Başlangıç ve hedef çevresini temizle 
         for dr in range(-3, 4):
             for dc in range(-3, 4):
                 for (pr, pc) in [START, GOAL]:
