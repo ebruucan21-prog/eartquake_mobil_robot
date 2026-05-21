@@ -40,7 +40,7 @@ earthquake_robot/
 
 
 
-# Kurulum
+#Kurulum
 
 #Gereksinimler
 
