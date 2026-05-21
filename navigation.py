@@ -13,9 +13,9 @@ import heapq
 from robot import DT, MAX_SPEED, MAX_OMEGA
 from environment import GRID_SIZE, FREE
 
-# ──────────────────────────────────────────────
+
 # Parametreler
-# ──────────────────────────────────────────────
+
 GOAL_THRESHOLD  = 1.5   # m — hedefe ulaşma mesafesi
 WAYPOINT_DIST   = 1.8   # m — bir waypoint'e bu kadar yaklaşınca sonrakine geç
 D0              = 1.5   # m — itici kuvvet etkili mesafesi
@@ -23,9 +23,8 @@ K_REP           = 2.0   # itici kuvvet kazancı
 REPLAN_INTERVAL = 50   # Her bu adımda yolu yeniden planla
 
 
-# ──────────────────────────────────────────────
 # A* Yol Planlayıcı
-# ──────────────────────────────────────────────
+
 def astar(grid: np.ndarray, start: tuple, goal: tuple) -> list:
     """
     grid  : GRID_SIZE x GRID_SIZE numpy dizisi (0=serbest, diğer=engel)
@@ -91,9 +90,9 @@ def smooth_path(path: list, window: int = 5) -> list:
     return smoothed
 
 
-# ──────────────────────────────────────────────
+
 # Ana Navigator
-# ──────────────────────────────────────────────
+
 class APFNavigator:
     def __init__(self, goal: tuple):
         self.goal         = np.array(goal, dtype=float)
@@ -103,7 +102,7 @@ class APFNavigator:
         self.step_count   : int  = 0
         self._grid        = None
 
-    # ── Yol Planlama ──────────────────────────
+    #  Yol Planlama 
     def plan(self, grid: np.ndarray,
              robot_x: float, robot_y: float):
         """A* ile global yol planla, waypoint listesini güncelle."""
@@ -135,7 +134,7 @@ class APFNavigator:
                              for p in (raw_path if raw_path else [])]
         print(f"[NAVİGASYON] Yol planlandı: {len(self.waypoints)} waypoint")
 
-    # ── Ana Kontrol ───────────────────────────
+    #  Ana Kontrol 
     def compute_control(self, robot_x: float, robot_y: float,
                         robot_theta: float,
                         lidar_points: np.ndarray,
@@ -162,7 +161,7 @@ class APFNavigator:
         return self._steer_to(robot_x, robot_y, robot_theta,
                               wx, wy, lidar_points, lidar_valid)
 
-    # ── Hedefe Yönelme + İtici Kuvvet ─────────
+    # Hedefe Yönelme + İtici Kuvvet 
     def _steer_to(self, rx, ry, rtheta,
                   tx, ty,
                   lidar_points, lidar_valid) -> tuple:
@@ -195,7 +194,7 @@ class APFNavigator:
 
         return float(v), float(omega)
 
-    # ── İtici Kuvvet ──────────────────────────
+    #  İtici Kuvvet 
     def _repulsive(self, pos, lidar_points, lidar_valid) -> np.ndarray:
         f = np.zeros(2)
         if lidar_points is None or not np.any(lidar_valid):
@@ -209,7 +208,7 @@ class APFNavigator:
         norm = np.linalg.norm(f)
         return f / norm * min(norm, 4.0) if norm > 1e-6 else f
 
-    # ── Yardımcılar ───────────────────────────
+    # Yardımcılar 
     def is_goal_reached(self, rx, ry) -> bool:
         return np.hypot(rx-self.goal[0], ry-self.goal[1]) < GOAL_THRESHOLD
 
