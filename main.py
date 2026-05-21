@@ -150,7 +150,7 @@ def _plot_all(env, true_path, ekf_path, dr_path,
 
     cmap = ListedColormap(["#F5F0E8","#2C2C2C","#C0392B","#E67E22"])
 
-    # ── 1. Ortam Haritası + Yol Planı ──────────
+    # 1. Ortam Haritası + Yol Planı 
     fig, ax = plt.subplots(figsize=(9, 9))
     ax.imshow(env.grid, cmap=cmap, origin="lower",
               vmin=0, vmax=3, interpolation="nearest")
@@ -190,7 +190,7 @@ def _plot_all(env, true_path, ekf_path, dr_path,
     plt.close()
     print("Harita + Yol → map_and_path.png")
 
-    # ── 2. Lokalizasyon: Gerçek vs EKF vs DR ──
+    #  2. Lokalizasyon: Gerçek vs EKF vs DR 
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
     ax = axes[0]
@@ -224,7 +224,7 @@ def _plot_all(env, true_path, ekf_path, dr_path,
     plt.close()
     print("Lokalizasyon → localization.png")
 
-    # ── 3. Hata Analizi ───────────────────────
+    # 3. Hata Analizi
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
     ax = axes[0]
@@ -258,7 +258,7 @@ def _plot_all(env, true_path, ekf_path, dr_path,
     plt.close()
     print("Hata analizi → error_analysis.png")
 
-    # ── 4. LiDAR Ham vs Filtrelenmiş ──────────
+    # 4. LiDAR Ham vs Filtrelenmiş 
     if lidar_raw is not None:
         fig, axes = plt.subplots(1, 2, figsize=(12, 5),
                                   subplot_kw={"projection": "polar"})
@@ -278,7 +278,7 @@ def _plot_all(env, true_path, ekf_path, dr_path,
         plt.close()
         print("LiDAR → lidar_comparison.png")
 
-    # ── 5. Engel Kümeleme Grafiği ─────────────
+    # 5. Engel Kümeleme Grafiği
     if cluster_log:
         fig, ax = plt.subplots(figsize=(10, 4))
         steps_cl = np.arange(len(cluster_log)) * LIDAR_FREQ
