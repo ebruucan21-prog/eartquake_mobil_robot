@@ -1,9 +1,8 @@
 import numpy as np
 from robot import DT
 
-# ──────────────────────────────────────────────
+
 # Kalman Filtresi Gürültü Parametreleri
-# ──────────────────────────────────────────────
 
 # Süreç gürültüsü kovaryans matrisi Q (model belirsizliği)
 Q = np.diag([0.05**2,   # x (m)
@@ -43,16 +42,15 @@ class ExtendedKalmanFilter:
         """
         init_pose : [x0, y0, theta0]
         """
-        self.mu  = init_pose.astype(float).copy()   # durum tahmini (3,)
+        self.mu  = init_pose.astype(float).copy()   # durum tahmini 
         self.P   = np.eye(3) * 0.1                  # kovaryans matrisi (3×3)
 
         # Hata kaydı (RMSE/MAE hesabı için)
         self.history_mu  : list[np.ndarray] = [self.mu.copy()]
         self.history_true: list[np.ndarray] = []
 
-    # ──────────────────────────────────────────
     # 1. Tahmin Adımı (Predict)
-    # ──────────────────────────────────────────
+
     def predict(self, v: float, omega: float) -> np.ndarray:
         """
         Enkoder / kontrol girdisiyle durum tahmini.
@@ -87,9 +85,9 @@ class ExtendedKalmanFilter:
         self.history_mu.append(self.mu.copy())
         return self.mu.copy()
 
-    # ──────────────────────────────────────────
+  
     # 2. IMU Güncelleme Adımı
-    # ──────────────────────────────────────────
+  
     def update_imu(self, theta_meas: float) -> np.ndarray:
         """
         IMU'dan gelen theta (yaw) ölçümüyle durum düzeltmesi.
@@ -119,9 +117,9 @@ class ExtendedKalmanFilter:
         self.history_mu[-1] = self.mu.copy()
         return self.mu.copy()
 
-    # ──────────────────────────────────────────
+
     # 3. LiDAR Güncelleme Adımı
-    # ──────────────────────────────────────────
+  
     def update_lidar(self, x_meas: float, y_meas: float) -> np.ndarray:
         """
         LiDAR'dan gelen (x, y) ölçümüyle konum düzeltmesi.
@@ -150,9 +148,8 @@ class ExtendedKalmanFilter:
         self.history_mu[-1] = self.mu.copy()
         return self.mu.copy()
 
-    # ──────────────────────────────────────────
     # 4. Hata analizi (RMSE / MAE)
-    # ──────────────────────────────────────────
+ 
     def record_true(self, true_pose: np.ndarray):
         """Her adımda gerçek konumu kaydet (hata analizi için)."""
         self.history_true.append(true_pose.copy())
@@ -184,9 +181,9 @@ class ExtendedKalmanFilter:
         return {"rmse": rmse, "mae": mae, "max": max_e,
                 "pos_err": pos_err}
 
-    # ──────────────────────────────────────────
+ 
     # Yardımcılar
-    # ──────────────────────────────────────────
+ 
     @staticmethod
     def _normalize(angle: float) -> float:
         return (angle + np.pi) % (2 * np.pi) - np.pi
@@ -203,9 +200,8 @@ class ExtendedKalmanFilter:
                 f"P_trace={np.trace(self.P):.4f})")
 
 
-# ──────────────────────────────────────────────
 # Hızlı test
-# ──────────────────────────────────────────────
+
 if __name__ == "__main__":
     from robot import DifferentialRobot
     import matplotlib.pyplot as plt
