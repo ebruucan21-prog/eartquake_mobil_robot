@@ -25,9 +25,9 @@ class LiDAR:
         self.last_points  = None
         self.last_clusters = []
 
-    # ──────────────────────────────────────────
+  
     # Ana tarama
-    # ──────────────────────────────────────────
+   
     def scan(self, robot_x, robot_y, robot_theta) -> dict:
         self.grid = self.env.get_grid()
 
@@ -66,9 +66,8 @@ class LiDAR:
             "clusters": self.last_clusters,
         }
 
-    # ──────────────────────────────────────────
     # DDA Işın Döküm
-    # ──────────────────────────────────────────
+
     def _cast_ray(self, ox, oy, angle) -> float:
         cos_a = np.cos(angle)
         sin_a = np.sin(angle)
@@ -85,9 +84,9 @@ class LiDAR:
                 return dist
         return MAX_RANGE
 
-    # ──────────────────────────────────────────
+   
     # Engel Kümeleme (basit mesafe tabanlı)
-    # ──────────────────────────────────────────
+    
     def cluster_obstacles(self, points, valid, ranges,
                           cluster_dist=1.5, min_points=2) -> list:
         """
@@ -140,9 +139,9 @@ class LiDAR:
 
         return clusters
 
-    # ──────────────────────────────────────────
+   
     # Konum tahmini (Kalman için ölçüm)
-    # ──────────────────────────────────────────
+    
     def estimate_position(self, robot_x, robot_y, robot_theta):
         scan_data = self.scan(robot_x, robot_y, robot_theta)
         rng  = scan_data["ranges"]
@@ -155,9 +154,9 @@ class LiDAR:
         return np.array([robot_x, robot_y,
                          pts[min_idx, 0], pts[min_idx, 1]])
 
-    # ──────────────────────────────────────────
+   
     # Görselleştirme
-    # ──────────────────────────────────────────
+   
     def render(self, robot_x, robot_y, robot_theta,
                ax=None, show=True):
         scan_data = self.scan(robot_x, robot_y, robot_theta)
